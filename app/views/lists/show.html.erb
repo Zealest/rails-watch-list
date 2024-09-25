@@ -1,0 +1,30 @@
+<div class="container">
+  <h1 class="text-center my-4"><%= @list.name %></h1>
+
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Movies in this list:</h2>
+      <ul class="list-group mb-4">
+        <% @list.bookmarks.each do |bookmark| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong><%= bookmark.movie.title %></strong> - <%= bookmark.comment %>
+            <%= link_to 'Remove', bookmark_path(bookmark), method: :delete, data: { confirm: "Are you sure you want to remove this bookmark?" }, class: "btn btn-danger btn-sm" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="col-md-4">
+      <h2>Add a New Movie to This List:</h2>
+      <%= simple_form_for [@list, @bookmark] do |f| %>
+        <div class="form-group">
+          <%= f.input :movie_id, collection: Movie.all, label_method: :title, value_method: :id, label: "Select a Movie", input_html: { class: 'form-control' } %>
+          <%= f.input :comment, label: "Comment", input_html: { class: 'form-control' } %>
+        </div>
+        <%= f.submit "Add Movie", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= link_to 'Back to Lists', lists_path, class: "btn btn-secondary mt-3" %>
+</div>
